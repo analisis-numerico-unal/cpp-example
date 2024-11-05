@@ -1,34 +1,19 @@
 FROM archlinux:base-devel
 
-# Actualizar el sistema e instalar paquetes
+# Update system and install packages
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm \
-    git \
     base-devel \
+    # Development tools
+    git \
     cmake \
     ninja \
-    vim \
-    neovim \
-    nano \
-    wget \
-    curl \
-    python \
-    python-pip \
-    python-numpy \
-    python-scipy \
-    python-matplotlib \
-    python-pandas \
-    python-sympy \
-    jupyter \
-    nodejs \
-    npm \
     gcc \
     gdb \
     lldb \
     clang \
     llvm \
     make \
-    cmake \
     valgrind \
     boost \
     fmt \
@@ -37,6 +22,25 @@ RUN pacman -Syu --noconfirm && \
     ccache \
     doxygen \
     graphviz \
+    # Python and data science
+    python \
+    python-pip \
+    python-numpy \
+    python-scipy \
+    python-matplotlib \
+    python-pandas \
+    python-sympy \
+    jupyter-notebook \
+    # Web development
+    nodejs \
+    npm \
+    # Editors and tools
+    vim \
+    neovim \
+    nano \
+    # System utilities
+    wget \
+    curl \
     man-pages \
     man-db \
     bash-completion \
@@ -47,13 +51,15 @@ RUN pacman -Syu --noconfirm && \
     fzf \
     fd \
     bat \
+    # Terminal customization
     lolcat \
     figlet \
     cowsay \
     fortune-mod \
+    # Numerical computing
     octave
 
-# Instalar herramientas adicionales de desarrollo
+# Install additional development tools via pip
 RUN pip install \
     cmake-format \
     conan \
@@ -65,7 +71,7 @@ RUN pip install \
     seaborn \
     scikit-learn
 
-# Configurar git
+# Configure git
 RUN git config --system core.editor "vim" && \
     git config --system color.ui true
 
