@@ -1,23 +1,40 @@
 image:
   file: Dockerfile
 
-# Puertos
+# Ports to expose to the workspace
 ports:
   - port: 3000
     onOpen: ignore
-  - port: 8888
+  - port: 8080
     onOpen: ignore
 
-# VS Code
+# Tasks to run before starting the workspace
+tasks:
+  - init: |
+      echo "Iniciando entorno Arch Linux"
+      # Aquí puedes agregar comandos de inicialización
+    command: |
+      echo "Workspace listo!"
+      
+# Extensions to install
 vscode:
   extensions:
-    - ms-vscode.cpptools
+    - dbaeumer.vscode-eslint
+    - ms-vscode.cpptools-extension-pack
     - ms-vscode.cmake-tools
     - twxs.cmake
+    - cschlosser.doxdocgen
+    - jeff-hykin.better-cpp-syntax
+    - ms-vscode.cpptools-themes
+    - vadimcn.vscode-lldb
+    - esbenp.prettier-vscode
+    - formulahendry.code-runner
+    - PKief.material-icon-theme
+    - eamodio.gitlens
+    - aaron-bond.better-comments
+    - oderwat.indent-rainbow
     - ms-python.python
     - ms-toolsai.jupyter
-  settings:
-    terminal.integrated.shell.linux: /bin/bash
-    editor.fontSize: 14
-    editor.fontLigatures: true
-    workbench.colorTheme: Dracula
+    - ms-toolsai.jupyter-renderers
+    - ms-toolsai.jupyter-keymap
+    - dracula-theme.theme-dracula
