@@ -30,6 +30,12 @@ RUN pacman -Syu --noconfirm && \
     python-matplotlib \
     python-pandas \
     python-sympy \
+    python-ipykernel \
+    python-notebook \
+    python-plotly \
+    python-seaborn \
+    python-scikit-learn \
+    python-cmake-build-extension \
     jupyter-notebook \
     # Web development
     nodejs \
@@ -59,17 +65,18 @@ RUN pacman -Syu --noconfirm && \
     # Numerical computing
     octave
 
-# Install additional development tools via pip
-RUN pip install \
+# Create and setup Python virtual environment for additional packages
+RUN python -m venv /opt/venv && \
+    source /opt/venv/bin/activate && \
+    pip install \
     cmake-format \
     conan \
     cppcheck \
     compdb \
-    notebook \
-    ipykernel \
-    plotly \
-    seaborn \
-    scikit-learn
+    --break-system-packages
+
+# Add virtual environment to PATH
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Configure git
 RUN git config --system core.editor "vim" && \
