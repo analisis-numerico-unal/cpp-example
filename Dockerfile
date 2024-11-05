@@ -75,6 +75,18 @@ RUN echo '#!/bin/bash\n\
 g++ -Wall -Wextra -O2 -march=native -ftree-vectorize "$@"\n\
 ' > /usr/local/bin/cpp-compile && chmod +x /usr/local/bin/cpp-compile
 
+# Install Mambaforge
+RUN wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-pypy3-Linux-x86_64.sh && \
+    sh Mambaforge-pypy3-Linux-x86_64.sh -b -p /opt/mambaforge && \
+    rm Mambaforge-pypy3-Linux-x86_64.sh
+
+# Add Mambaforge to PATH
+ENV PATH="/opt/mambaforge/bin:$PATH"
+
+# Create cling environment and install xeus-cling
+RUN mamba create -n cling xeus-cling jupyterlab -c conda-forge && \
+    mamba clean --all -f -y
+
 # Configure shell
 RUN echo 'PS1="\[\033[38;5;14m\][\[$(tput sgr0)\]\[\033[38;5;9m\]\u\[$(tput sgr0)\]\[\033[38;5;14m\]@\[$(tput sgr0)\]\[\033[38;5;13m\]\h\[$(tput sgr0)\]\[\033[38;5;14m\]]\[$(tput sgr0)\]\[\033[38;5;10m\]\w\[$(tput sgr0)\]\n\\$ \[$(tput sgr0)\]"' >> /etc/bash.bashrc
 

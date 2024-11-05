@@ -12,9 +12,15 @@ ports:
 tasks:
   - init: |
       echo "Iniciando entorno Arch Linux"
+      
+      # Activate cling environment
+      source /opt/mambaforge/bin/activate cling
+      
+      # Start Jupyter Notebook server
+      jupyter notebook --no-browser --ip=0.0.0.0 --allow-root
     command: |
+      clear
       echo "Workspace listo!"
-      pip install ipython-cpp
       
 # Extensions to install
 vscode:
