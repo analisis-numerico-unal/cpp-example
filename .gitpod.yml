@@ -1,0 +1,23 @@
+image:
+  file: Dockerfile
+
+# Ports to expose to the workspace
+ports:
+  - port: 3000
+    onOpen: ignore
+  - port: 8080
+    onOpen: ignore
+
+# Tasks to run before starting the workspace
+tasks:
+  - init: |
+      echo "Iniciando entorno Arch Linux"
+      # Aquí puedes agregar comandos de inicialización
+    command: |
+      echo "Workspace listo!"
+      
+# Extensions to install
+vscode:
+  extensions:
+    - ms-python.python
+    - dbaeumer.vscode-eslint
