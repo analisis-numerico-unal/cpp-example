@@ -1,22 +1,21 @@
-image:
-  file: Dockerfile
+image: Dockerfile
 
-# Ports to expose to the workspace
+# Puertos a exponer al workspace
 ports:
   - port: 3000
     onOpen: ignore
   - port: 8080
     onOpen: ignore
 
-# Tasks to run before starting the workspace
+# Tareas a ejecutar antes de iniciar el workspace
 tasks:
   - init: |
       echo "Iniciando entorno Arch Linux"
       # Aquí puedes agregar comandos de inicialización
     command: |
       echo "Workspace listo!"
-      
-# Extensions to install
+
+# Extensiones para instalar
 vscode:
   extensions:
     - dbaeumer.vscode-eslint
@@ -39,13 +38,14 @@ vscode:
     - ms-toolsai.jupyter-keymap
     - dracula-theme.theme-dracula
 
-# Github protection
+# Protección para GitHub
 github:
   prebuilds:
     master: true
     branches: false
     pullRequests: false
 
+# Configuración de git
 gitConfig:
   protect:
     - .gitpod.yml
