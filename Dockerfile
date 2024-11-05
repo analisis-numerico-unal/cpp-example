@@ -1,28 +1,22 @@
 FROM archlinux:base-devel
 
-# Update system and install packages
-RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm \
+# Update system and add extra repositories if needed
+RUN pacman-key --init && \
+    pacman-key --populate archlinux && \
+    pacman -Syu --noconfirm
+
+# Install basic development tools first
+RUN pacman -S --noconfirm \
     base-devel \
-    # Development tools
     git \
     cmake \
-    ninja \
     gcc \
-    gdb \
-    lldb \
-    clang \
-    llvm \
     make \
-    valgrind \
-    boost \
-    fmt \
-    gtest \
-    benchmark \
-    ccache \
-    doxygen \
-    graphviz \
-    # Python and data science
+    wget \
+    curl
+
+# Install Python and core scientific packages
+RUN pacman -S --noconfirm \
     python \
     python-pip \
     python-numpy \
@@ -30,23 +24,28 @@ RUN pacman -Syu --noconfirm && \
     python-matplotlib \
     python-pandas \
     python-sympy \
-    python-ipykernel \
-    python-notebook \
-    python-plotly \
-    python-seaborn \
-    python-scikit-learn \
-    python-cmake-build-extension \
-    jupyter-notebook \
-    # Web development
+    jupyter-notebook-min \
+    ipython
+
+# Install development tools
+RUN pacman -S --noconfirm \
+    gdb \
+    clang \
+    llvm \
+    valgrind \
+    doxygen \
+    graphviz \
     nodejs \
-    npm \
-    # Editors and tools
+    npm
+
+# Install editors
+RUN pacman -S --noconfirm \
     vim \
     neovim \
-    nano \
-    # System utilities
-    wget \
-    curl \
+    nano
+
+# Install system utilities
+RUN pacman -S --noconfirm \
     man-pages \
     man-db \
     bash-completion \
@@ -56,24 +55,28 @@ RUN pacman -Syu --noconfirm && \
     ripgrep \
     fzf \
     fd \
-    bat \
-    # Terminal customization
-    lolcat \
-    figlet \
-    cowsay \
-    fortune-mod \
-    # Numerical computing
-    octave
+    bat
 
-# Create and setup Python virtual environment for additional packages
+# Install terminal customization tools
+RUN pacman -S --noconfirm \
+    cowsay \
+    fortune-mod
+
+# Setup Python virtual environment
 RUN python -m venv /opt/venv && \
     source /opt/venv/bin/activate && \
+    pip install --upgrade pip && \
     pip install \
-    cmake-format \
-    conan \
-    cppcheck \
-    compdb \
-    --break-system-packages
+        ipykernel \
+        notebook \
+        plotly \
+        seaborn \
+        scikit-learn \
+        cmake-format \
+        conan \
+        cppcheck \
+        compdb \
+        --break-system-packages
 
 # Add virtual environment to PATH
 ENV PATH="/opt/venv/bin:$PATH"
@@ -82,67 +85,63 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN git config --system core.editor "vim" && \
     git config --system color.ui true
 
-# Crear mensaje de bienvenida
+# Create welcome message
 RUN echo '#!/bin/bash\n\
 clear\n\
-echo -e "\033[34m$(figlet -f slant "Análisis Numérico")\033[0m" | lolcat -a -d 2\n\
-echo -e "\033[35m================================================\033[0m" | lolcat\n\
-echo -e "\033[36m     Universidad Nacional de Colombia sede Palmira\033[0m" | lolcat\n\
-echo -e "\033[35m================================================\033[0m" | lolcat\n\
-echo -e "\033[33m\n🔢 Bienvenido al curso de Análisis Numérico\033[0m\n"\n\
-echo -e "\033[32m📚 Herramientas disponibles:\033[0m"\n\
-echo -e "   • C++ con bibliotecas numéricas"\n\
-echo -e "   • Python con NumPy, SciPy, Matplotlib"\n\
-echo -e "   • Octave para cálculos numéricos"\n\
-echo -e "   • Jupyter Notebooks"\n\
-echo -e "   • Herramientas de visualización"\n\
-echo -e "\033[32m🔍 Comandos útiles:\033[0m"\n\
-echo -e "   • plot-help : Muestra ejemplos de gráficas"\n\
-echo -e "   • calc-help : Muestra ayuda para cálculos numéricos"\n\
-echo -e "   • cpp-compile : Compila con flags para análisis numérico"\n\
-echo -e "\033[35m================================================\033[0m" | lolcat\n\
-echo -e "\033[36m        ¡Comencemos a programar! 💻\033[0m\n" | lolcat\n\
-fortune | cowsay -f tux | lolcat\n\
-echo -e "\033[35m================================================\033[0m" | lolcat\n\
+echo "=================================================" \n\
+echo "     Análisis Numérico - UNAL Palmira" \n\
+echo "=================================================" \n\
+echo -e "\n🔢 Bienvenido al curso de Análisis Numérico\n" \n\
+echo -e "📚 Herramientas disponibles:" \n\
+echo "   • C++ con bibliotecas numéricas" \n\
+echo "   • Python con NumPy, SciPy, Matplotlib" \n\
+echo "   • Jupyter Notebooks" \n\
+echo "   • Herramientas de visualización" \n\
+echo -e "\n🔍 Comandos útiles:" \n\
+echo "   • notebook : Iniciar Jupyter Notebook" \n\
+echo "   • python : Iniciar Python" \n\
+echo "   • cpp-compile : Compilar con optimizaciones" \n\
+echo "=================================================" \n\
+if command -v fortune > /dev/null && command -v cowsay > /dev/null; then\n\
+    fortune | cowsay\n\
+fi\n\
+echo "=================================================" \n\
 ' > /usr/local/bin/welcome-message && chmod +x /usr/local/bin/welcome-message
 
-# Crear scripts de ayuda
+# Create helper scripts
 RUN echo '#!/bin/bash\n\
-echo -e "\033[34mEjemplos de gráficas con C++ y Python:\033[0m\n"\n\
-echo -e "1. Matplotlib en Python:"\n\
-echo "   python -c \"import matplotlib.pyplot as plt; import numpy as np; x = np.linspace(-5,5,100); plt.plot(x, np.sin(x)); plt.show()\""\n\
-echo -e "\n2. Gnuplot en C++:"\n\
-echo "   g++ -o plot plot.cpp -lgnuplot-iostream"\n\
+echo -e "Ejemplos de gráficas con Python:\n"\n\
+echo "1. Matplotlib básico:"\n\
+echo "python -c \"import matplotlib.pyplot as plt; import numpy as np; x = np.linspace(-5,5,100); plt.plot(x, np.sin(x)); plt.show()\""\n\
 ' > /usr/local/bin/plot-help && chmod +x /usr/local/bin/plot-help
 
+# Create optimized compilation script
 RUN echo '#!/bin/bash\n\
 g++ -Wall -Wextra -O2 -march=native -ftree-vectorize "$@"\n\
 ' > /usr/local/bin/cpp-compile && chmod +x /usr/local/bin/cpp-compile
 
-# Configurar shell con mejor prompt y utilidades
+# Configure shell prompt
 RUN echo 'PS1="\[\033[38;5;14m\][\[$(tput sgr0)\]\[\033[38;5;9m\]\u\[$(tput sgr0)\]\[\033[38;5;14m\]@\[$(tput sgr0)\]\[\033[38;5;13m\]\h\[$(tput sgr0)\]\[\033[38;5;14m\]]\[$(tput sgr0)\]\[\033[38;5;10m\]\w\[$(tput sgr0)\]\n\\$ \[$(tput sgr0)\]"' >> /etc/bash.bashrc
 
-# Ejecutar mensaje de bienvenida al iniciar
+# Set welcome message on startup
 RUN echo '/usr/local/bin/welcome-message' >> /etc/bash.bashrc
 
-# Agregar alias útiles para análisis numérico
+# Add useful aliases
 RUN echo 'alias ll="ls -la"\n\
 alias g++="g++ -Wall -Wextra -Wpedantic"\n\
 alias gc="g++ -Wall -Wextra -Wpedantic -g"\n\
 alias gdb="gdb -q"\n\
 alias cmake="cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"\n\
 alias make="make -j$(nproc)"\n\
-alias valgrind="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes"\n\
 alias python="python3"\n\
 alias pip="pip3"\n\
 alias notebook="jupyter notebook --ip=0.0.0.0 --allow-root"\n\
-alias calc="octave-cli"\n\
-alias plot="gnuplot"\n\
-alias matrix="cmatrix | lolcat"\n\
+source /opt/venv/bin/activate\n\
 ' >> /etc/bash.bashrc
 
-# Limpiar caché
-RUN pacman -Scc --noconfirm
+# Clean up
+RUN pacman -Scc --noconfirm && \
+    rm -rf /var/cache/pacman/pkg/*
 
-# Configurar el workspace
+# Set working directory
 WORKDIR /workspace
