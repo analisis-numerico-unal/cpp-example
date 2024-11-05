@@ -12,9 +12,9 @@ ports:
 tasks:
   - init: |
       echo "Iniciando entorno Arch Linux"
-      # Aquí puedes agregar comandos de inicialización
     command: |
       echo "Workspace listo!"
+      pip install ipython-cpp
       
 # Extensions to install
 vscode:

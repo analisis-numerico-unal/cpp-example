@@ -92,6 +92,9 @@ alias notebook="jupyter notebook --ip=0.0.0.0 --allow-root"\n\
 source /opt/venv/bin/activate\n\
 ' >> /etc/bash.bashrc
 
+# Install C++ kernel for Jupyter
+RUN pip install ipython-cpp
+
 # Clean up
 RUN pacman -Scc --noconfirm && \
     rm -rf /var/cache/pacman/pkg/*
