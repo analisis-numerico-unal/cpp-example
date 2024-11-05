@@ -40,28 +40,6 @@ python archivo.py
 
 ```
 
-## 💻 Comandos Útiles
-
-### Iniciar Jupyter Notebook
-```plaintext	
-jupyter notebook
-```
-
-### Iniciar Jupyter Lab
-```plaintext	
-jupyter lab
-```
-
-### Compilar código C++
-```plaintext	
-cpp-compile archivo.cpp
-```
-
-### Ejecutar Python
-```plaintext	
-python archivo.py
-```
-
 ### 📚 Trabajando con notebooks
 1. Los notebooks deben guardarse en la carpeta correspondiente
 2. Nombra tus notebooks con formato: `practica1_nombre_apellido.ipynb`

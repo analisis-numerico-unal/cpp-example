@@ -61,19 +61,10 @@ echo -e "📚 Herramientas disponibles:" \n\
 echo "   • C++ con bibliotecas numéricas" \n\
 echo "   • Python con NumPy, SciPy, Matplotlib" \n\
 echo "   • Jupyter Notebooks" \n\
-echo -e "\n🔍 Comandos útiles:" \n\
-echo "   • notebook : Iniciar Jupyter Notebook" \n\
-echo "   • python : Iniciar Python" \n\
-echo "   • cpp-compile : Compilar con optimizaciones" \n\
 echo "=================================================" \n\
 fortune | cowsay\n\
 echo "=================================================" \n\
 ' > /usr/local/bin/welcome-message && chmod +x /usr/local/bin/welcome-message
-
-# Create compilation script
-RUN echo '#!/bin/bash\n\
-g++ -Wall -Wextra -O2 -march=native -ftree-vectorize "$@"\n\
-' > /usr/local/bin/cpp-compile && chmod +x /usr/local/bin/cpp-compile
 
 # Install Mambaforge
 RUN wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-pypy3-Linux-x86_64.sh && \
@@ -92,17 +83,6 @@ RUN echo 'PS1="\[\033[38;5;14m\][\[$(tput sgr0)\]\[\033[38;5;9m\]\u\[$(tput sgr0
 
 # Set welcome message on startup
 RUN echo '/usr/local/bin/welcome-message' >> /etc/bash.bashrc
-
-# Add useful aliases
-RUN echo 'alias ll="ls -la"\n\
-alias g++="g++ -Wall -Wextra -Wpedantic"\n\
-alias gc="g++ -Wall -Wextra -Wpedantic -g"\n\
-alias gdb="gdb -q"\n\
-alias python="python3"\n\
-alias pip="pip3"\n\
-alias notebook="jupyter notebook --ip=0.0.0.0 --allow-root"\n\
-source /opt/venv/bin/activate\n\
-' >> /etc/bash.bashrc
 
 # Clean up
 RUN pacman -Scc --noconfirm && \
