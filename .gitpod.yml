@@ -1,51 +1,23 @@
 image:
   file: Dockerfile
 
-# Configuración de puertos
+# Puertos
 ports:
   - port: 3000
     onOpen: ignore
   - port: 8888
-    onOpen: ignore  # Para Jupyter Notebook
-  - port: 6080
-    onOpen: ignore  # Para aplicaciones gráficas
+    onOpen: ignore
 
-# Configuración del IDE
+# VS Code
 vscode:
   extensions:
-    - ms-vscode.cpptools-extension-pack
+    - ms-vscode.cpptools
     - ms-vscode.cmake-tools
     - twxs.cmake
-    - cschlosser.doxdocgen
-    - jeff-hykin.better-cpp-syntax
-    - ms-vscode.cpptools-themes
-    - vadimcn.vscode-lldb
-    - esbenp.prettier-vscode
-    - formulahendry.code-runner
-    - PKief.material-icon-theme
-    - eamodio.gitlens
-    - aaron-bond.better-comments
-    - oderwat.indent-rainbow
     - ms-python.python
     - ms-toolsai.jupyter
-    - ms-toolsai.jupyter-renderers
-    - ms-toolsai.jupyter-keymap
-    - dracula-theme.theme-dracula
-
   settings:
-    editor.fontFamily: "'Geist Mono', 'Droid Sans Mono', 'monospace'"
+    terminal.integrated.shell.linux: /bin/bash
     editor.fontSize: 14
     editor.fontLigatures: true
-    editor.minimap.enabled: false
-    editor.cursorBlinking: "smooth"
-    editor.linkedEditing: true
-    editor.cursorSmoothCaretAnimation: "on"
-    workbench.colorTheme: "Dracula"
-    editor.formatOnSave: true
-    editor.formatOnPaste: true
-    files.autoSave: "afterDelay"
-    terminal.integrated.defaultProfile.linux: "bash"
-    terminal.integrated.fontSize: 14
-    cmake.configureOnOpen: true
-    python.pythonPath: "/usr/bin/python3"
-    jupyter.alwaysTrustNotebooks: true
+    workbench.colorTheme: Dracula
