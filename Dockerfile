@@ -24,7 +24,7 @@ RUN pacman -S --noconfirm \
     python-matplotlib \
     python-pandas \
     python-sympy \
-    jupyter-notebook-min 
+    jupyter-notebook
 
 # Install development tools
 RUN pacman -S --noconfirm \
