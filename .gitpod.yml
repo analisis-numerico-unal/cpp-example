@@ -38,3 +38,16 @@ vscode:
     - ms-toolsai.jupyter-renderers
     - ms-toolsai.jupyter-keymap
     - dracula-theme.theme-dracula
+
+# Github protection
+github:
+  prebuilds:
+    master: true
+    branches: false
+    pullRequests: false
+
+gitConfig:
+  protect:
+    - .gitpod.yml
+    - Dockerfile
+    - README.md
