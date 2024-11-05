@@ -1,6 +1,6 @@
 FROM archlinux:base-devel
 
-# Update the sistem and install the packages
+# Update the system and install packages
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm \
     git \
@@ -11,9 +11,14 @@ RUN pacman -Syu --noconfirm && \
     curl \
     python \
     nodejs \
-    npm
+    npm \
+    gcc \
+    g++ \
+    gdb \
+    make \
+    cmake
 
-# Clean the cache and the package files
+# Clean the cache
 RUN pacman -Scc --noconfirm
 
 # Config the workspace
