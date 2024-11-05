@@ -13,7 +13,6 @@ RUN pacman -Syu --noconfirm && \
     nodejs \
     npm \
     gcc \
-    g++ \
     gdb \
     make \
     cmake
